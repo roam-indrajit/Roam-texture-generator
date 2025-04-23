@@ -3,6 +3,9 @@ import { TEXTURE_INPAINTING_PROMPT } from '../../lib/prompt-seamless';
 import generateInitialTexture from '../../lib/generateInitialTexture';
 import makeTextureSeamless from '../../lib/makeTextureSeamless';
 
+import { uploadBase64ToS3 } from '../../lib/aws/s3';
+import { storeTextureMetadata } from '../../lib/aws/dynamo';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -38,6 +41,12 @@ export default async function handler(req, res) {
       initialTextureBase64,
       seamlessPrompt
     );
+
+    const id = uuidv4();
+    const s3Key = `textures/${id}.png`;
+
+    const imageUrl = await uploadBase64ToS3(seamlessTextureBase64, s3Key);
+    await storeTextureMetadata({ id, prompt, imageUrl });
     
     // Return the seamless texture as a data URL
     console.log("Seamless texture generation complete!");
