@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     // Return the seamless texture as a data URL
     console.log("Seamless texture generation complete!");
     return res.status(200).json({
-      imageUrl: `data:image/png;base64,${seamlessTextureBase64}`
+      imageUrl: `${imageUrl}`
     });
   } catch (error) {
     console.error('Error generating seamless texture:', error);
