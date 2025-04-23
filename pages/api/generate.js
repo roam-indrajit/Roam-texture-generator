@@ -3,6 +3,8 @@ import { TEXTURE_INPAINTING_PROMPT } from '../../lib/prompt-seamless';
 import generateInitialTexture from '../../lib/generateInitialTexture';
 import makeTextureSeamless from '../../lib/makeTextureSeamless';
 
+import { v4 as uuidv4 } from 'uuid';
+
 import { uploadBase64ToS3 } from '../../lib/aws/s3';
 import { storeTextureMetadata } from '../../lib/aws/dynamo';
 
